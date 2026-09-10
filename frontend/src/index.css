@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+.teachstudio-board {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* TeachStudio provides its own whiteboard controls.
+   Hide Excalidraw's default UI to avoid duplicate toolbars. */
+.teachstudio-board .layer-ui__wrapper {
+  display: none !important;
+}
