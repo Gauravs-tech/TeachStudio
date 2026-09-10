@@ -1,5 +1,11 @@
-import type { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw'
-import { useEffect, useState } from 'react'
+import type {
+  ExcalidrawImperativeAPI,
+} from '@excalidraw/excalidraw'
+
+import {
+  useEffect,
+  useState,
+} from 'react'
 
 interface BoardColorPickerProps {
   api: ExcalidrawImperativeAPI | null
@@ -52,7 +58,8 @@ function BoardColorPicker({
     }
 
     setSelectedColor(
-      api.getAppState().currentItemStrokeColor,
+      api.getAppState()
+        .currentItemStrokeColor,
     )
   }, [api])
 
@@ -67,14 +74,15 @@ function BoardColorPicker({
 
     api.updateScene({
       appState: {
-        currentItemStrokeColor: color,
+        currentItemStrokeColor:
+          color,
       },
     })
   }
 
   return (
-    <div className="flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white/95 px-2 py-1.5 shadow-md backdrop-blur-sm">
-      <span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400">
+    <div className="flex items-center gap-1.5 rounded-xl border border-[#2A2F3A] bg-[#171B24]/95 px-2 py-1.5 shadow-lg shadow-black/20 backdrop-blur-sm">
+      <span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-[#94A3B8]">
         Color
       </span>
 
@@ -91,18 +99,21 @@ function BoardColorPicker({
             aria-label={`Set drawing color to ${color.name}`}
             aria-pressed={isSelected}
             onClick={() =>
-              handleColorChange(color.value)
+              handleColorChange(
+                color.value,
+              )
             }
             className={`flex h-7 w-7 items-center justify-center rounded-full transition ${
               isSelected
-                ? 'ring-2 ring-gray-900 ring-offset-2'
+                ? 'ring-2 ring-[#8B5CF6] ring-offset-2 ring-offset-[#171B24]'
                 : 'hover:scale-110'
             }`}
           >
             <span
-              className="h-5 w-5 rounded-full border border-gray-300"
+              className="h-5 w-5 rounded-full border border-[#2A2F3A]"
               style={{
-                backgroundColor: color.value,
+                backgroundColor:
+                  color.value,
               }}
             />
           </button>

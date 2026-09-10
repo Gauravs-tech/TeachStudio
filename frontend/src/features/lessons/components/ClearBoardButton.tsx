@@ -56,8 +56,8 @@ function ClearBoardButton({
 
   if (isConfirming) {
     return (
-      <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white/95 px-2 py-1.5 shadow-md backdrop-blur-sm">
-        <span className="text-xs text-gray-500">
+      <div className="flex items-center gap-2 rounded-xl border border-[#2A2F3A] bg-[#171B24]/95 px-2.5 py-2 shadow-lg backdrop-blur-sm">
+        <span className="text-xs font-medium text-[#CBD5E1]">
           Clear entire board?
         </span>
 
@@ -66,7 +66,7 @@ function ClearBoardButton({
           onClick={() =>
             setIsConfirming(false)
           }
-          className="rounded-md px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100"
+          className="rounded-md border border-[#2A2F3A] bg-[#11151D] px-2.5 py-1.5 text-xs font-medium text-[#94A3B8] transition hover:border-[#8B5CF6] hover:bg-[#171B24] hover:text-[#F8FAFC]"
         >
           Cancel
         </button>
@@ -74,7 +74,7 @@ function ClearBoardButton({
         <button
           type="button"
           onClick={handleClearBoard}
-          className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-700"
+          className="rounded-md bg-[#F43F5E] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#FB7185]"
         >
           Clear Board
         </button>
@@ -90,7 +90,7 @@ function ClearBoardButton({
       onClick={() =>
         setIsConfirming(true)
       }
-      className="rounded-lg border border-gray-200 bg-white/95 px-3 py-2 text-xs font-medium text-gray-600 shadow-md backdrop-blur-sm transition hover:bg-gray-100 hover:text-gray-900"
+      className="rounded-lg border border-[#2A2F3A] bg-[#171B24]/95 px-3.5 py-2 text-xs font-semibold text-[#CBD5E1] shadow-lg backdrop-blur-sm transition hover:border-[#8B5CF6] hover:bg-[#11151D] hover:text-[#F8FAFC]"
     >
       Clear
     </button>

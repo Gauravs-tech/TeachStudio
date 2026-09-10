@@ -17,7 +17,7 @@ export const BOARD_THEMES: Record<
   BLACKBOARD: {
     id: 'BLACKBOARD',
     name: 'Blackboard',
-    backgroundColor: '#1f2937',
+    backgroundColor: '#313132',
     previewClass: 'bg-gray-900 border-gray-700',
   },
 

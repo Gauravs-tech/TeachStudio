@@ -168,45 +168,50 @@ function ZoomControls({
     Math.round(zoom * 100)
 
   return (
-    <div className="flex items-center gap-0.5 rounded-xl border border-gray-200 bg-white/95 p-1 shadow-md backdrop-blur-sm">
+    <div className="flex items-center gap-0.5 rounded-xl border border-[#2A2F3A] bg-[#171B24]/95 p-1 shadow-lg shadow-black/20 backdrop-blur-sm">
+      {/* Zoom Out */}
       <button
         type="button"
         title="Zoom out"
         aria-label="Zoom out"
         onClick={handleZoomOut}
-        className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200"
+        className="flex h-8 w-8 items-center justify-center rounded-lg text-[#CBD5E1] transition hover:bg-[#2A2F3A] hover:text-white active:bg-[#6D28D9]"
       >
         <ZoomOutIcon />
       </button>
 
+      {/* Zoom Percentage */}
       <button
         type="button"
         title="Reset zoom to 100%"
         aria-label="Reset zoom to 100%"
         onClick={handleResetZoom}
-        className="min-w-[52px] rounded-md px-2 py-1.5 text-xs font-semibold tabular-nums text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+        className="min-w-[52px] rounded-md px-2 py-1.5 text-xs font-semibold tabular-nums text-[#CBD5E1] transition hover:bg-[#2A2F3A] hover:text-white"
       >
         {zoomPercentage}%
       </button>
 
+      {/* Zoom In */}
       <button
         type="button"
         title="Zoom in"
         aria-label="Zoom in"
         onClick={handleZoomIn}
-        className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200"
+        className="flex h-8 w-8 items-center justify-center rounded-lg text-[#CBD5E1] transition hover:bg-[#2A2F3A] hover:text-white active:bg-[#6D28D9]"
       >
         <ZoomInIcon />
       </button>
 
-      <div className="mx-1 h-5 w-px bg-gray-200" />
+      {/* Divider */}
+      <div className="mx-1 h-5 w-px bg-[#2A2F3A]" />
 
+      {/* Fit */}
       <button
         type="button"
         title="Fit board to screen"
         aria-label="Fit board to screen"
         onClick={handleZoomToFit}
-        className="rounded-md px-2 py-1.5 text-xs font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+        className="rounded-md px-2 py-1.5 text-xs font-medium text-[#CBD5E1] transition hover:bg-[#2A2F3A] hover:text-white"
       >
         Fit
       </button>

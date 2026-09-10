@@ -15,7 +15,11 @@ import ZoomControls from './ZoomControls'
 import TeachingToolbar from './TeachingToolbar'
 import UndoRedoControls from './UndoRedoControls'
 import ClearBoardButton from './ClearBoardButton'
+import SlideNavigation from './SlideNavigation'
+import DownloadSlidesButton from './DownloadSlidesButton'
 
+import { useSlideScene } from '../hooks/useSlideScene'
+import { useSlideKeyboardNavigation } from '../hooks/useSlideKeyboardNavigation'
 import { usePartialEraser } from '../hooks/usePartialEraser'
 import { useTemporaryHighlighter } from '../hooks/useTemporaryHighlighter'
 
@@ -59,7 +63,14 @@ function Whiteboard({
         theme: 'light' as const,
       },
 
-      scrollToContent: true,
+      /*
+       * Do not automatically move the
+       * viewport to content.
+       *
+       * The slide itself controls the
+       * scene and navigation.
+       */
+      scrollToContent: false,
     }),
     [
       boardTheme.backgroundColor,
@@ -67,34 +78,46 @@ function Whiteboard({
   )
 
   /*
+   * Slide keyboard navigation.
+   */
+  useSlideKeyboardNavigation()
+
+  /*
    * Custom TeachStudio partial eraser.
    *
-   * Important:
-   * We intentionally do NOT activate
-   * Excalidraw's native eraser here.
-   *
-   * The custom hook handles:
-   * - pointer tracking
-   * - smooth eraser movement
-   * - partial stroke removal
-   * - splitting strokes
-   * - zoom/pan coordinate conversion
+   * We intentionally do NOT use
+   * Excalidraw's native eraser.
    */
   usePartialEraser({
     api: excalidrawAPI,
+
     active:
       activeTool === 'eraser',
   })
 
+  /*
+   * Temporary highlighter.
+   */
   useTemporaryHighlighter({
-  api: excalidrawAPI,
-  active:
-    activeTool === 'highlight',
-})
+    api: excalidrawAPI,
+
+    active:
+      activeTool === 'highlight',
+  })
 
   /*
-   * Update board background
-   * whenever the selected board theme changes.
+   * Connect Excalidraw with
+   * the currently selected slide.
+   */
+  useSlideScene({
+    api: excalidrawAPI,
+
+    onBoardChange,
+  })
+
+  /*
+   * Keep the selected board theme
+   * synchronized with Excalidraw.
    */
   useEffect(() => {
     if (!excalidrawAPI) {
@@ -112,77 +135,144 @@ function Whiteboard({
     boardTheme.backgroundColor,
   ])
 
+  /*
+   * Completely disable wheel-based
+   * scrolling/panning inside the board.
+   *
+   * Capture phase is important here.
+   * It intercepts the event before
+   * Excalidraw receives it.
+   */
+  useEffect(() => {
+    if (!excalidrawAPI) {
+      return
+    }
+
+    const board =
+      document.querySelector(
+        '.teachstudio-board',
+      )
+
+    if (!board) {
+      return
+    }
+
+    const preventBoardScroll = (
+      event: WheelEvent,
+    ) => {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    board.addEventListener(
+      'wheel',
+      preventBoardScroll,
+      {
+        passive: false,
+        capture: true,
+      },
+    )
+
+    return () => {
+      board.removeEventListener(
+        'wheel',
+        preventBoardScroll,
+        {
+          capture: true,
+        },
+      )
+    }
+  }, [excalidrawAPI])
+
   return (
     <div
-      className={`teachstudio-board board-${theme.toLowerCase()}`}
+      className={`teachstudio-board board-${theme.toLowerCase()} h-full w-full overflow-hidden`}
     >
-      <Excalidraw
-        excalidrawAPI={
-          setExcalidrawAPI
-        }
-        initialData={initialData}
-        theme="light"
-        onChange={() => {
-          onBoardChange()
-        }}
-        UIOptions={{
-          canvasActions: {
-            changeViewBackgroundColor:
-              false,
+      {/* Download + Clear controls */}
+      <div className="absolute right-4 top-4 z-[1000] flex items-center gap-2">
+        <DownloadSlidesButton
+          appState={
+            excalidrawAPI?.getAppState() ??
+            null
+          }
+          files={
+            excalidrawAPI?.getFiles() ??
+            {}
+          }
+        />
 
-            clearCanvas:
-              false,
-
-            export:
-              false,
-
-            loadScene:
-              false,
-
-            saveToActiveFile:
-              false,
-
-            saveAsImage:
-              false,
-
-            toggleTheme:
-              false,
-          },
-
-          tools: {
-            image: false,
-          },
-        }}
-      />
-
-      {/* TeachStudio drawing toolbar */}
-      <div className="absolute left-4 top-4 z-[1000]">
-        <TeachingToolbar
+        <ClearBoardButton
           api={excalidrawAPI}
+          onBoardChange={
+            onBoardChange
+          }
         />
       </div>
 
-      {/* TeachStudio undo / redo */}
-      <div className="absolute bottom-4 left-4 z-[1000]">
-        <UndoRedoControls
-          api={excalidrawAPI}
-        />
-      </div>
+      {/* Excalidraw workspace */}
+      <div className="relative h-full w-full overflow-hidden">
+        <Excalidraw
+          excalidrawAPI={
+            setExcalidrawAPI
+          }
+          initialData={initialData}
+          theme="light"
+          onChange={() => {
+            onBoardChange()
+          }}
+          UIOptions={{
+            canvasActions: {
+              changeViewBackgroundColor:
+                false,
 
-      {/* TeachStudio zoom controls */}
-      <div className="absolute bottom-4 left-1/8 z-[1000] -translate-x-1/2">
-        <ZoomControls
-          api={excalidrawAPI}
-        />
-      </div>
+              clearCanvas:
+                false,
 
-      {/* TeachStudio clear board */}
-<div className="absolute top-4 right-4 z-[1000]">
-  <ClearBoardButton
-    api={excalidrawAPI}
-    onBoardChange={onBoardChange}
-  />
-</div>
+              export:
+                false,
+
+              loadScene:
+                false,
+
+              saveToActiveFile:
+                false,
+
+              saveAsImage:
+                false,
+
+              toggleTheme:
+                false,
+            },
+
+            tools: {
+              image: false,
+            },
+          }}
+        />
+
+        {/* TeachStudio drawing toolbar */}
+        <div className="absolute left-4 top-4 z-[1000]">
+          <TeachingToolbar
+            api={excalidrawAPI}
+          />
+        </div>
+
+        {/* TeachStudio bottom controls */}
+        <div className="absolute bottom-4 left-1/2 z-[1000] flex -translate-x-1/2 items-center gap-3">
+          {/* Undo / Redo */}
+          <UndoRedoControls
+            api={excalidrawAPI}
+          />
+
+          {/* Zoom */}
+          <ZoomControls
+            api={excalidrawAPI}
+          />
+
+          {/* Slide navigation */}
+          <SlideNavigation />
+        </div>
+      </div>
     </div>
   )
 }

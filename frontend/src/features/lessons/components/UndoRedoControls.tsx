@@ -432,11 +432,6 @@ function UndoRedoControls({
 
     /*
      * Restore previous scene.
-     *
-     * NEVER is important here because this is our
-     * own history restoration. We don't want
-     * Excalidraw to add this restoration to its
-     * internal history as another change.
      */
     api.updateScene({
       elements:
@@ -458,10 +453,6 @@ function UndoRedoControls({
       redoStackRef.current.length,
     )
 
-    /*
-     * Release the restoring lock after the scene
-     * update has propagated.
-     */
     setTimeout(() => {
       isRestoringRef.current = false
     }, 0)
@@ -538,7 +529,7 @@ function UndoRedoControls({
     redoCount > 0
 
   return (
-    <div className="flex items-center gap-0.5 rounded-xl border border-gray-200 bg-white/95 p-1 shadow-md backdrop-blur-sm">
+    <div className="flex items-center gap-0.5 rounded-xl border border-[#2A2F3A] bg-[#171B24]/95 p-1 shadow-lg shadow-black/20 backdrop-blur-sm">
       <button
         type="button"
         title="Undo"
@@ -547,8 +538,8 @@ function UndoRedoControls({
         onClick={handleUndo}
         className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
           !canUndo
-            ? 'cursor-not-allowed text-gray-300'
-            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200'
+            ? 'cursor-not-allowed text-[#64748B]'
+            : 'text-[#CBD5E1] hover:bg-[#2A2F3A] hover:text-[#F8FAFC] active:bg-[#6D28D9]/30'
         }`}
       >
         <UndoIcon />
@@ -562,8 +553,8 @@ function UndoRedoControls({
         onClick={handleRedo}
         className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
           !canRedo
-            ? 'cursor-not-allowed text-gray-300'
-            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200'
+            ? 'cursor-not-allowed text-[#64748B]'
+            : 'text-[#CBD5E1] hover:bg-[#2A2F3A] hover:text-[#F8FAFC] active:bg-[#6D28D9]/30'
         }`}
       >
         <RedoIcon />

@@ -1,5 +1,65 @@
 @import "tailwindcss";
 
+/*
+ * TeachStudio Design System
+ *
+ * Premium dark SaaS theme
+ * Charcoal + Purple + Violet
+ */
+
+:root {
+  /* Backgrounds */
+  --ts-bg-primary: #0b0d12;
+  --ts-bg-secondary: #313132;
+  --ts-bg-sidebar: #313132;
+  --ts-bg-card: #171b24;
+
+  /* Borders */
+  --ts-border: #2a2f3a;
+
+  /* Primary accent */
+  --ts-purple: #8b5cf6;
+  --ts-violet: #a855f7;
+  --ts-deep-purple: #6d28d9;
+
+  /* Secondary accent */
+  --ts-pink: #ec4899;
+  --ts-coral: #f43f5e;
+
+  /* Status */
+  --ts-success: #22c55e;
+  --ts-green: #10b981;
+  --ts-recording: #ef4444;
+  --ts-warning: #f59e0b;
+
+  /* Text */
+  --ts-text-primary: #f8fafc;
+  --ts-text-secondary: #cbd5e1;
+  --ts-text-muted: #94a3b8;
+  --ts-text-disabled: #64748b;
+
+  /* Gradients */
+  --ts-gradient-primary: linear-gradient(
+    135deg,
+    #7c3aed 0%,
+    #a855f7 100%
+  );
+
+  --ts-gradient-brand: linear-gradient(
+    135deg,
+    #8b5cf6 0%,
+    #a855f7 50%,
+    #ec4899 100%
+  );
+
+  /* Shadows / glow */
+  --ts-shadow-purple:
+    0 0 24px rgba(139, 92, 246, 0.18);
+
+  --ts-shadow-purple-strong:
+    0 0 32px rgba(139, 92, 246, 0.28);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -12,6 +72,10 @@ body,
 }
 
 body {
+  background: var(--ts-bg-primary);
+
+  color: var(--ts-text-primary);
+
   font-family:
     Inter,
     system-ui,
@@ -20,6 +84,31 @@ body {
     "Segoe UI",
     sans-serif;
 }
+
+/*
+ * TeachStudio application scrollbar
+ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ts-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ts-border);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ts-purple);
+}
+
+/*
+ * TeachStudio whiteboard container
+ */
 .teachstudio-board {
   position: relative;
   height: 100%;
@@ -28,8 +117,26 @@ body {
   background: #ffffff;
 }
 
-/* TeachStudio provides its own whiteboard controls.
-   Hide Excalidraw's default UI to avoid duplicate toolbars. */
+.teachstudio-board {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #0B0D12;
+
+  container-type: size;
+
+   flex-shrink: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/*
+ * Excalidraw's default UI is intentionally hidden.
+ *
+ * TeachStudio provides its own controls.
+ */
 .teachstudio-board .layer-ui__wrapper {
   display: none !important;
 }
+

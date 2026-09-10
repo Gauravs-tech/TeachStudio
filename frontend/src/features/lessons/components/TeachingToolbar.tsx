@@ -11,6 +11,7 @@ import type {
 
 import BoardColorPicker from './BoardColorPicker'
 import BoardSizePicker from './BoardSizePicker'
+import { useSlideStore } from '../stores/slide.store'
 
 import { useBoardStore } from '../stores/board.store'
 
@@ -258,6 +259,10 @@ function TeachingToolbar({
   const highlightModeRef =
     useRef(false)
 
+    const addSlide = useSlideStore(
+  (state) => state.addSlide,
+)
+
   /**
    * Activate TeachStudio Highlight.
    *
@@ -325,9 +330,6 @@ function TeachingToolbar({
   /**
    * Keep TeachStudio toolbar state synchronized
    * with Excalidraw.
-   *
-   * Highlight is special because Excalidraw
-   * internally represents it as freedraw.
    */
   useEffect(() => {
     if (!api) {
@@ -585,7 +587,7 @@ function TeachingToolbar({
   return (
     <div className="flex flex-row items-start gap-2">
       {/* Main toolbar */}
-      <div className="flex flex-col items-center gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 shadow-lg backdrop-blur-sm">
+      <div className="flex flex-col items-center gap-1 rounded-xl border border-[#2A2F3A] bg-[#171B24]/95 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm">
         {TOOLS.map((tool, index) => {
           const isActive =
             activeTool === tool.id
@@ -599,7 +601,7 @@ function TeachingToolbar({
               className="flex flex-col items-center"
             >
               {showDivider && (
-                <div className="my-1 h-px w-6 bg-gray-200" />
+                <div className="my-1 h-px w-6 bg-[#2A2F3A]" />
               )}
 
               <button
@@ -612,10 +614,10 @@ function TeachingToolbar({
                     tool.id,
                   )
                 }
-                className={`flex h-9 w-9 items-center justify-center rounded-lg transition ${
+                className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-150 ${
                   isActive
-                    ? 'bg-gray-900 text-white shadow-sm'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-gradient-to-br from-[#7C3AED] to-[#A855F7] text-white shadow-[0_0_14px_rgba(139,92,246,0.45)]'
+                    : 'text-[#CBD5E1] hover:bg-[#2A2F3A] hover:text-[#F8FAFC]'
                 }`}
               >
                 {tool.icon}
@@ -623,6 +625,41 @@ function TeachingToolbar({
             </div>
           )
         })}
+
+        <div className="my-1 h-px w-full bg-[#2A2F3A]" />
+
+<button
+  type="button"
+  title="Add new slide"
+  aria-label="Add new slide"
+  onClick={() => {
+    addSlide()
+  }}
+  className="flex h-9 w-9 items-center justify-center rounded-lg text-[#CBD5E1] transition hover:bg-[#2A2F3A] hover:text-white active:bg-[#6D28D9]"
+>
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 5V19"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+
+    <path
+      d="M5 12H19"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
+</button>
       </div>
 
       {/* Contextual options */}
@@ -636,10 +673,12 @@ function TeachingToolbar({
             api={api}
           />
 
+          
+
           {/* Highlight options */}
           {activeTool === 'highlight' && (
-            <div className="flex flex-col items-stretch gap-1 rounded-lg border border-gray-200 bg-white/95 p-1.5 shadow-sm">
-              <span className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-500">
+            <div className="flex flex-col items-stretch gap-1 rounded-lg border border-[#2A2F3A] bg-[#171B24]/95 p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.3)] backdrop-blur-sm">
+              <span className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#94A3B8]">
                 Highlight
               </span>
 
@@ -653,8 +692,8 @@ function TeachingToolbar({
                 className={`rounded-md px-2.5 py-1.5 text-left text-[11px] font-medium transition ${
                   highlightMode ===
                   'TEMPORARY'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-[0_0_10px_rgba(139,92,246,0.3)]'
+                    : 'text-[#CBD5E1] hover:bg-[#2A2F3A] hover:text-[#F8FAFC]'
                 }`}
               >
                 Temporary
@@ -670,8 +709,8 @@ function TeachingToolbar({
                 className={`rounded-md px-2.5 py-1.5 text-left text-[11px] font-medium transition ${
                   highlightMode ===
                   'PERMANENT'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-[0_0_10px_rgba(139,92,246,0.3)]'
+                    : 'text-[#CBD5E1] hover:bg-[#2A2F3A] hover:text-[#F8FAFC]'
                 }`}
               >
                 Permanent
